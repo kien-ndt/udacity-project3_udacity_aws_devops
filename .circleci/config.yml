@@ -160,14 +160,14 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["50:3b:2b:e4:92:c4:eb:8a:7f:81:c4:34:01:46:b1:08"]
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
             yum install -y tar gzip
             python3 -m pip install ansible
             ansible --version
+      - attach_workspace:
+          at: ~/
       - run:
           name: Configure server
           command: |
