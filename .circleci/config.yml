@@ -148,7 +148,32 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
+      - destroy-environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail
+
+  configure-infrastructure:
+    docker:
+      -image: ansible/ansible
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["50:3b:2b:e4:92:c4:eb:8a:7f:81:c4:34:01:46:b1:08"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar gzip
+            ansible --version
+      - run:
+          name: Configure server
+          command: |
+            pwa 
+            ls -a 
+            cd .circleci/ansible
+            cat inventory.txt
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
@@ -168,3 +193,5 @@ workflows:
           requires: [build-backend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
