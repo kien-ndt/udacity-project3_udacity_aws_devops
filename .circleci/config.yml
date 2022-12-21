@@ -141,6 +141,10 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> .circleci/ansible/inventory.txt
+      - run:
+          name: Install package
+          command: |
+            yum install tar gzip
       - persist_to_workspace:
           root: ~/
           paths:
