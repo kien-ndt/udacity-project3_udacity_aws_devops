@@ -147,9 +147,9 @@ jobs:
           command: |
             yum install -y tar gzip
       - persist_to_workspace:
-          root: project
+          root: .
           paths:
-            - .circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
@@ -168,7 +168,7 @@ jobs:
             python3 -m pip install ansible
             ansible --version
       - attach_workspace:
-          at: project
+          at: .
       - run:
           name: Configure server
           command: |
