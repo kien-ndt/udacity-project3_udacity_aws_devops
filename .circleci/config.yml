@@ -164,7 +164,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar gzip python3.10
+            yum install -y tar gzip python
             python3 -m pip install ansible==2.9.6
             ansible --version
       - attach_workspace:
