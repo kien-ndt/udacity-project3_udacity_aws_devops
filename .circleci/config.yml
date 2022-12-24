@@ -237,6 +237,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - restore_cache:
+          name: Restore dependencies frontend-build node_modules
+          keys: frontend-build
       - run:
           name: Install package
           command: |
@@ -245,9 +248,8 @@ jobs:
             export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install 13.8.0
-      - restore_cache:
-          name: Restore dependencies frontend-build node_modules
-          keys: frontend-build
+            node -v
+            npm -v
       - run:
           name: Get backend url
           command: |
@@ -263,7 +265,11 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
+            node -v
+            npm -v
             cd frontend
+            node -v
+            npm -v
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
