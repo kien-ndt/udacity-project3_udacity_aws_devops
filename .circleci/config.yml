@@ -181,7 +181,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar gzip python3 openssh-client
+            yum install -y tar gzip python3 openssh openssh-clients
             python3 -m pip install ansible==2.9.22
             ansible --version
       - attach_workspace:
@@ -288,7 +288,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar gzip python3 openssh-client
+            yum install -y tar gzip python3 openssh openssh-clients
             python3 -m pip install ansible==2.9.22
             ansible --version
       - attach_workspace:
