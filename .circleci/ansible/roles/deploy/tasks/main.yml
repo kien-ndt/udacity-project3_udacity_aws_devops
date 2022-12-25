@@ -6,8 +6,13 @@
 - name: Copy node_modules
   become: yes
   copy:
-    src: ../../backend/node_modules
+    src: ../../backend/node_modules.tar.gz
     dest: /home/ubuntu/udapeople
+- name: Extract node_modules
+  shell: |
+    apt install tar gzip
+    cd /home/ubuntu/udapeople
+    tar -xf node_modules.tar.gz
 - name: Start server
   shell: |
     pm2 delete all
