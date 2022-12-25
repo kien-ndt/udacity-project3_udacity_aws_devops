@@ -1,19 +1,15 @@
 - name: Copy backend
   become: yes
   copy:
-    src: ../../backend/dist
+    src: ../../backend.tar.gz
     dest: /home/ubuntu/udapeople
-- name: Copy node_modules
-  become: yes
-  copy:
-    src: ../../backend/node_modules.tar.gz
-    dest: /home/ubuntu/udapeople
-- name: Extract node_modules
+- name: Extract Backend
   shell: |
     apt install tar gzip
     cd /home/ubuntu/udapeople
-    tar -xf node_modules.tar.gz
+    tar -xf backend.tar.gz
+    ls
 - name: Start server
   shell: |
     pm2 delete all
-    pm2 start -f /home/ubuntu/udapeople/main.js
+    pm2 start -f /home/ubuntu/udapeople/backend/dist/main.js
