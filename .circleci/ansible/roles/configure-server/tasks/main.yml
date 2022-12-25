@@ -6,4 +6,5 @@
     nvm install 13.8.0
 - name: Install pm2
   shell: |
+    /bin/bash -c "source ~/.nvm/nvm.sh"
     npm install -g pm2
