@@ -349,7 +349,7 @@ jobs:
             echo $URL
             if curl -s ${URL} | grep -q "Welcome"
             then
-              exit 1
+              exit 0
             else
               exit 1
             fi            
