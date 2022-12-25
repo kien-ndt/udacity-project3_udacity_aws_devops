@@ -29,6 +29,7 @@
 - name: Add environment to ec2
   become: yes
   shell: |
+    echo "TYPEORM_CONNECTION=${TYPEORM_CONNECTION}"
     echo "export TYPEORM_CONNECTION=${TYPEORM_CONNECTION}" >> ~/.profile
     echo "export TYPEORM_ENTITIES=${TYPEORM_ENTITIES}" >> ~/.profile
     echo "export TYPEORM_HOST=${TYPEORM_HOST}" >> ~/.profile
@@ -38,4 +39,3 @@
     echo "export TYPEORM_DATABASE=${TYPEORM_DATABASE}" >> ~/.profile
     echo "export TYPEORM_MIGRATIONS=${TYPEORM_MIGRATIONS}" >> ~/.profile
     echo "export TYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR}" >> ~/.profile
-    source ~/.profile
