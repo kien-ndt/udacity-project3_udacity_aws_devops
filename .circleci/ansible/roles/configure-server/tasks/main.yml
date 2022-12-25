@@ -1,13 +1,13 @@
-- name: Install tar gzip
+- name: "Update apt packages"
   become: yes
   apt:
-    name: ["tar", "gzip"]
-    state: latest
+    upgrade: yes
+    update_cache: yes
 
-- name: Install nodejs
+- name: Install nodejs and dependencies
   become: yes
   apt:
-    name: ["nodejs", "npm"]
+    name: ["nodejs", "npm", "tar", "gzip"]
     state: latest
 
 - name: Install n to special node version
