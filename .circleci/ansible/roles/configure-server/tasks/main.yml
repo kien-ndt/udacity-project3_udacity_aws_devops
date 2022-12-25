@@ -1,5 +1,4 @@
 - name: Add environment to ec2
-  become: yes
   shell: |
     echo "TYPEORM_CONNECTION=${TYPEORM_CONNECTION}"
     echo "export TYPEORM_CONNECTION=${TYPEORM_CONNECTION}" >> /home/ubuntu/.profile
@@ -13,29 +12,24 @@
     echo "export TYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR}" >> /home/ubuntu/.profile
     
 - name: "Update apt packages"
-  become: yes
   apt:
     upgrade: yes
     update_cache: yes
 
 - name: Install nodejs and dependencies
-  become: yes
   apt:
     name: ["nodejs", "npm", "tar", "gzip"]
     state: latest
 
 - name: Install n to special node version
-  become: yes
   npm:
     name: n
     global: yes
 
 - name: Install nodejs 13.8.0
-  become: yes
   shell: n 13.8.0
 
 - name: Install pm2
-  become: yes
   npm: 
     name: pm2
     global: yes

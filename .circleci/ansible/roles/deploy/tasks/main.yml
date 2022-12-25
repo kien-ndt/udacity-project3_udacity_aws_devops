@@ -1,16 +1,13 @@
 - name: Copy backend
-  become: yes
   copy:
     src: ../../artifact.tar.gz
     dest: /home/ubuntu/udapeople/
 - name: Extract Backend
-  become: yes
   shell: |
     cd /home/ubuntu/udapeople
     tar -xf artifact.tar.gz
     ls
 - name: Start server
-  become: yes
   shell: |
     cd /home/ubuntu/udapeople/backend
     pm2 delete all
