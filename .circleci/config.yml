@@ -323,10 +323,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       # your code here
       - run:
           name: Backend smoke test.
           command: |
@@ -349,17 +345,45 @@ jobs:
             echo $URL
             if curl -s ${URL} | grep -q "Welcome"
             then
-              exit 1
+              exit 0
             else
               exit 1
             fi
-            echo ${CIRCLE_WORKFLOW_ID:0:7}            
+            echo ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
       - revert-migrations:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail         
+
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            export OldWorkflowID=$(aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text)
+            echo OldWorkflowId="$OldWorkflowID"
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yaml \
+              --stack-name InitialStack \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=udapeople
+      - destroy-environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail
+      - revert-migrations:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail     
 
 workflows:
   default:
@@ -376,7 +400,7 @@ workflows:
       #     requires: [build-backend]
       - deploy-infrastructure:
           # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          requires: [build-backend]
+          requires: [build-backend, build-frontend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
