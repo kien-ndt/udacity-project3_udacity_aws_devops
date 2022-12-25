@@ -25,3 +25,17 @@
   npm: 
     name: pm2
     global: yes
+
+- name: Add environment to ec2
+  become: yes
+  shell: |
+    echo "export TYPEORM_CONNECTION=${TYPEORM_CONNECTION}" >> ~/.profile
+    echo "export TYPEORM_ENTITIES=${TYPEORM_ENTITIES}" >> ~/.profile
+    echo "export TYPEORM_HOST=${TYPEORM_HOST}" >> ~/.profile
+    echo "export TYPEORM_PORT=${TYPEORM_PORT}" >> ~/.profile
+    echo "export TYPEORM_USERNAME=${TYPEORM_USERNAME}" >> ~/.profile
+    echo "export TYPEORM_PASSWORD=${TYPEORM_PASSWORD}" >> ~/.profile
+    echo "export TYPEORM_DATABASE=${TYPEORM_DATABASE}" >> ~/.profile
+    echo "export TYPEORM_MIGRATIONS=${TYPEORM_MIGRATIONS}" >> ~/.profile
+    echo "export TYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR}" >> ~/.profile
+    source ~/.profile
