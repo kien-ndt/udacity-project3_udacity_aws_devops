@@ -10,3 +10,7 @@
     src: ../../backend/node_modules
     dest: /home/ubuntu/udapeople
     recursive: true
+- name: Start server
+  shell: |
+    pm2 delete all
+    pm2 start -f /home/ubuntu/udapeople/main.js
