@@ -342,14 +342,21 @@ jobs:
             echo "$API_URL"
             if curl "${API_URL}/api/status" | grep "ok"
             then
-              return 0
+              exit 0
             else
-              return 1
+              exit 1
             fi
-      # - run:
-      #     name: Frontend smoke test.
-      #     command: |
-      #       # your code here
+      - run:
+          name: Frontend smoke test.
+          command: |            
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.eu-central-1.amazonaws.com/index.html"
+            echo $URL
+            if curl -s ${URL} | grep -q "Welcome"
+            then
+              exit 1
+            else
+              exit 1
+            fi            
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
