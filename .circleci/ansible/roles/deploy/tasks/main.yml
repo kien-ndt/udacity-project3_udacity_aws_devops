@@ -15,3 +15,4 @@
     cd /home/ubuntu/udapeople/backend
     pm2 delete all
     pm2 start npm --name "udapeople-backend" -- start
+    pm2 list
