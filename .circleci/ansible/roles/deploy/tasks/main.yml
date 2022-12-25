@@ -1,12 +1,12 @@
 - name: Copy backend
   become: yes
-  synchronize:
+  copy:
     src: ../../backend/dist
     dest: /home/ubuntu/udapeople
     recursive: true
 - name: Copy node_modules
   become: yes
-  synchronize:
+  copy:
     src: ../../backend/node_modules
     dest: /home/ubuntu/udapeople
     recursive: true
