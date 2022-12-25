@@ -3,6 +3,8 @@
   copy:
     src: ../../artifact.tar.gz
     dest: /home/ubuntu/udapeople/
+    owner: ubuntu
+    mode: 0644
 - name: Extract Backend
   become: yes
   shell: |
