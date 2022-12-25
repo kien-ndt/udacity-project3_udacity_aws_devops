@@ -3,12 +3,12 @@
   copy:
     src: ../../artifact.tar.gz
     dest: /home/ubuntu/udapeople
-- name: Extract Backend
-  shell: |
-    apt install tar gzip
-    cd /home/ubuntu/udapeople
-    tar -xf backend.tar.gz
-    ls
+# - name: Extract Backend
+#   shell: |
+#     apt install tar gzip
+#     cd /home/ubuntu/udapeople
+#     tar -xf artifact.tar.gz
+#     ls
 # - name: Start server
 #   shell: |
 #     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
