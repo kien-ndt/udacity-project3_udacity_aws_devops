@@ -144,14 +144,14 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-      # - run:
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         --tags project=udapeople \
-      #         --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=udapeople \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -327,43 +327,43 @@ jobs:
       #     name: Install dependencies
       #     command: |
       #       # your code here
+      # - run:
+      #     name: Backend smoke test.
+          # command: |
+          #   export BACKEND_IP=$(aws ec2 describe-instances \
+          #     --query 'Reservations[*].Instances[*].PublicIpAddress' \
+          #     --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+          #     --output text)
+          #   export API_URL="http://${BACKEND_IP}:3030/api/status"
+          #   echo "$API_URL"
+          #   if curl "${API_URL}" | grep "ok"
+          #   then
+          #     exit 0
+          #   else
+          #     exit 1
+          #   fi
       - run:
-          name: Backend smoke test.
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text)
-            export API_URL="http://${BACKEND_IP}:3030/api/status"
-            echo "$API_URL"
-            if curl "${API_URL}" | grep "ok"
+          name: Frontend smoke test.
+          command: |            
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.eu-central-1.amazonaws.com/index.html"
+            echo $URL
+            if curl -s ${URL} | grep -q "Welcome"
             then
-              exit 0
+              exit 1
             else
               exit 1
-            fi
-      # - run:
-      #     name: Frontend smoke test.
-      #     command: |            
-      #       URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.eu-central-1.amazonaws.com/index.html"
-      #       echo $URL
-      #       if curl -s ${URL} | grep -q "Welcome"
-      #       then
-      #         exit 1
-      #       else
-      #         exit 1
-      #       fi            
-      # - destroy-environment:
-      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #     when: on_fail
-      # - revert-migrations:
-      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #     when: on_fail         
+            fi            
+      - destroy-environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail
+      - revert-migrations:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail         
 
 workflows:
   default:
     jobs:
-      # - build-frontend
+      - build-frontend
       - build-backend
       # - test-frontend:
       #     requires: [build-frontend]
@@ -378,14 +378,13 @@ workflows:
           requires: [build-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
-      - deploy-backend:
-          # requires: [run-migrations]
+      - run-migrations:
           requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
