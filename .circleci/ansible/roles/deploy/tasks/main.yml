@@ -15,4 +15,4 @@
   become: yes
   shell: |
     pm2 delete all
-    pm2 start -f /home/ubuntu/udapeople/backend/dist/main.js
+    pm2 start npm --name "udapeople-backend" -- start
