@@ -1,11 +1,27 @@
+- name: Install tar gzip
+  become: yes
+  apt:
+    name: ["tar", "gzip"]
+    state: latest
+
 - name: Install nodejs
   become: yes
-  shell: |
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install 13.8.0
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+
+- name: Install n to special node version
+  become: yes
+  npm:
+    name: n
+    global: yes
+
+- name: Install nodejs 13.8.0
+  become: yes
+  shell: n 13.8.0
+
 - name: Install pm2
   become: yes
-  shell: |
-    npm install -g pm2
+  npm: 
+    name: pm2
+    global: yes
