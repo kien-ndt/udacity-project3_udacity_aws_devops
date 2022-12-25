@@ -2,7 +2,7 @@
   become: yes
   copy:
     src: ../../artifact.tar.gz
-    dest: /home/ubuntu/udapeople
+    dest: /home/ubuntu/udapeople/
 # - name: Extract Backend
 #   shell: |
 #     apt install tar gzip
