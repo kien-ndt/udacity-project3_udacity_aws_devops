@@ -29,7 +29,7 @@ commands:
           when: on_fail
           command: |
             cd backend
-            SUCCESS=$(curl -H "token: udacity-project3-devops" --request GET http://ec2-54-175-182-216.compute-1.amazonaws.com:3000/DB_MIGRATION_<< parameters.id >>)
+            SUCCESS=$(curl -H "token: udacity-project3-devops" --request GET http://ec2-34-230-47-86.compute-1.amazonaws.com:3000/DB_MIGRATION_<< parameters.id >>)
             echo $SUCCESS
             if [[ "$SUCCESS" == "success" ]]
             then
@@ -225,9 +225,9 @@ jobs:
             cat migrations_dump.txt
             if grep -q "has been executed successfully" migrations_dump.txt
             then
-              curl -H "Content-Type: text/plain" -H "token: udacity-project3-devops" --request POST --data "success" http://ec2-54-175-182-216.compute-1.amazonaws.com:3000/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7}
+              curl -H "Content-Type: text/plain" -H "token: udacity-project3-devops" --request POST --data "success" http://ec2-34-230-47-86.compute-1.amazonaws.com:3000/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7}
             else
-              curl -H "Content-Type: text/plain" -H "token: udacity-project3-devops" --request POST --data "fail" http://ec2-54-175-182-216.compute-1.amazonaws.com:3000/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7}
+              curl -H "Content-Type: text/plain" -H "token: udacity-project3-devops" --request POST --data "fail" http://ec2-34-230-47-86.compute-1.amazonaws.com:3000/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7}
             fi
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
